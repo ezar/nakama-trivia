@@ -4,6 +4,7 @@ import { useGameStore } from '../store/gameStore'
 import { useProfileStore } from '../store/profileStore'
 import { useClaudeStore } from '../store/claudeStore'
 import { useT } from '../i18n/useT'
+import { useTTS } from '../i18n/useTTS'
 
 const QUESTION_DURATION = 12
 const ADVANCE_DELAY = 1600
@@ -25,6 +26,7 @@ export function GameScreen() {
   const profile = useProfileStore(s => s.getActiveProfile())
   const { explain } = useClaudeStore()
   const t = useT()
+  const { speak, stop, speaking } = useTTS()
 
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
@@ -93,13 +95,14 @@ export function GameScreen() {
       if (isLast) {
         doFinishRound()
       } else {
+        stop()
         setSelectedAnswer(null)
         setIsCorrect(null)
         setTimeLeft(QUESTION_DURATION)
         advanceQuestion()
       }
     }, correct ? ADVANCE_DELAY : ADVANCE_DELAY + (pendingExplanation ? 600 : 0))
-  }, [selectedAnswer, currentQuestion, answerQuestion, advanceQuestion, clearTimers, gameMode, loseLife, doFinishRound, explain, setExplanation, pendingExplanation])
+  }, [selectedAnswer, currentQuestion, answerQuestion, advanceQuestion, clearTimers, gameMode, loseLife, doFinishRound, explain, setExplanation, pendingExplanation, stop])
 
   // Timer
   useEffect(() => {
@@ -191,7 +194,7 @@ export function GameScreen() {
             exit={{ opacity: 0, y: -20 }}
             className="flex-1 flex flex-col"
           >
-            {/* Difficulty badge */}
+            {/* Difficulty badge + TTS button */}
             <div className="flex items-center gap-2 mb-4">
               <span className="text-xs font-mono text-op-parchment/60 uppercase tracking-widest">
                 {'⭐'.repeat(currentQuestion.difficulty)}
@@ -199,6 +202,19 @@ export function GameScreen() {
               {currentQuestion.source === 'claude' && (
                 <span className="text-xs font-mono text-op-cyan/60 uppercase tracking-widest">AI</span>
               )}
+              <div className="ml-auto">
+                <button
+                  onClick={() => speak(currentQuestion.prompt)}
+                  aria-label={speaking ? 'Stop reading' : 'Read question aloud'}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                    speaking
+                      ? 'bg-op-gold/20 text-op-gold animate-pulse'
+                      : 'text-op-parchment/40 hover:text-op-parchment hover:bg-white/5'
+                  }`}
+                >
+                  {speaking ? '🔊' : '🔈'}
+                </button>
+              </div>
             </div>
 
             {/* Question text */}
