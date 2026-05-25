@@ -25,7 +25,7 @@ export function ResultScreen() {
         {/* Header */}
         <div className="text-center">
           <div className="font-pirata text-4xl text-op-gold mb-1">
-            {perfect ? '💎 ¡Perfecto!' : correctCount > wrongCount ? '⚡ ¡Bien hecho!' : '☠️ Sigue entrenando'}
+            {perfect ? '💎 Perfect!' : correctCount > wrongCount ? '⚡ Well done!' : '☠️ Keep training'}
           </div>
           <div className="text-op-parchment font-mono text-sm">
             {currentCategoryId ? CATEGORIES.find(c => c.id === currentCategoryId)?.name : ''}
@@ -37,31 +37,31 @@ export function ResultScreen() {
           <div className="flex justify-between">
             <div className="text-center flex-1">
               <div className="font-pirata text-op-gold text-3xl">{score.toLocaleString()}</div>
-              <div className="text-op-parchment text-xs font-mono">puntos</div>
+              <div className="text-op-parchment text-xs font-mono">points</div>
             </div>
             <div className="text-center flex-1">
               <div className="font-pirata text-op-cream text-3xl">+{berriesEarned.toLocaleString()}</div>
-              <div className="text-op-parchment text-xs font-mono">🍇 berries</div>
+              <div className="text-op-parchment text-xs font-mono">🍇 Berries</div>
             </div>
             <div className="text-center flex-1">
               <div className="font-pirata text-op-cyan text-3xl">×{maxStreak}</div>
-              <div className="text-op-parchment text-xs font-mono">racha máx.</div>
+              <div className="text-op-parchment text-xs font-mono">max streak</div>
             </div>
           </div>
 
           <div className="flex justify-between text-center">
             <div className="flex-1">
               <div className="text-op-green font-pirata text-2xl">{correctCount}</div>
-              <div className="text-op-parchment text-xs">✓ correctas</div>
+              <div className="text-op-parchment text-xs">✓ correct</div>
             </div>
             <div className="flex-1">
               <div className="text-op-red font-pirata text-2xl">{wrongCount}</div>
-              <div className="text-op-parchment text-xs">✗ errores</div>
+              <div className="text-op-parchment text-xs">✗ wrong</div>
             </div>
             {perfectBonus > 0 && (
               <div className="flex-1">
                 <div className="text-op-gold font-pirata text-2xl">+{perfectBonus}</div>
-                <div className="text-op-parchment text-xs">bonus perfecto</div>
+                <div className="text-op-parchment text-xs">perfect bonus</div>
               </div>
             )}
           </div>
@@ -70,7 +70,7 @@ export function ResultScreen() {
         {/* Newly unlocked */}
         {newlyUnlockedCategories.length > 0 && (
           <div className="bg-op-gold/10 border border-op-gold/30 rounded-xl p-4">
-            <div className="font-pirata text-op-gold text-lg mb-2">🔓 ¡Nueva ruta desbloqueada!</div>
+            <div className="font-pirata text-op-gold text-lg mb-2">🔓 New route unlocked!</div>
             {newlyUnlockedCategories.map(catId => {
               const cat = CATEGORIES.find(c => c.id === catId)
               return cat ? (
@@ -83,7 +83,7 @@ export function ResultScreen() {
         {/* New achievements */}
         {newAchievements.length > 0 && (
           <div className="space-y-2">
-            <div className="text-op-parchment text-xs font-mono uppercase tracking-widest">Logros desbloqueados</div>
+            <div className="text-op-parchment text-xs font-mono uppercase tracking-widest">Achievements unlocked</div>
             {newAchievements.map(id => {
               const ach = ACHIEVEMENTS.find(a => a.id === id)
               return ach ? (
@@ -106,7 +106,7 @@ export function ResultScreen() {
 
         {/* Profile berries */}
         <div className="text-center text-op-parchment font-mono text-sm">
-          Total: <span className="text-op-gold font-pirata text-lg">{profile.berries.toLocaleString()}</span> 🍇
+          Total: <span className="text-op-gold font-pirata text-lg">{profile.berries.toLocaleString()}</span> 🍇 Berries
         </div>
       </div>
 
@@ -119,14 +119,14 @@ export function ResultScreen() {
             }}
             className="w-full py-4 bg-op-gold text-op-deep font-pirata text-2xl rounded-xl hover:bg-op-gold-dim transition-colors"
           >
-            ⚓ Otra ronda
+            ⚓ Play Again
           </button>
         )}
         <button
           onClick={() => setPhase('hub')}
           className="w-full py-3 border border-white/10 text-op-parchment font-pirata text-xl rounded-xl hover:bg-op-ocean transition-colors"
         >
-          Elegir categoría
+          Choose Category
         </button>
       </div>
     </div>
@@ -143,8 +143,8 @@ export function RankingScreen() {
     <div className="h-dvh flex flex-col bg-op-navy bg-ocean-pattern">
       <div className="px-4 pt-6 pb-2">
         <div className="flex items-center justify-between mb-4">
-          <div className="font-pirata text-op-gold text-3xl">🏆 Ranking</div>
-          <button onClick={() => setPhase('hub')} className="text-op-parchment hover:text-op-cream font-mono text-sm">← Volver</button>
+          <div className="font-pirata text-op-gold text-3xl">🏆 Rankings</div>
+          <button onClick={() => setPhase('hub')} className="text-op-parchment hover:text-op-cream font-mono text-sm">← Back</button>
         </div>
       </div>
 
@@ -173,7 +173,7 @@ export function RankingScreen() {
 
         {sorted.length === 0 && (
           <div className="text-center text-op-parchment/40 font-mono pt-20">
-            Aún no hay piratas registrados
+            No pirates registered yet
           </div>
         )}
       </div>
@@ -203,8 +203,8 @@ export function DevilFruitScreen() {
     <div className="h-dvh flex flex-col bg-op-navy bg-ocean-pattern">
       <div className="px-4 pt-6 pb-2">
         <div className="flex items-center justify-between mb-4">
-          <div className="font-pirata text-op-gold text-3xl">🍎 Frutas del Diablo</div>
-          <button onClick={() => setPhase('hub')} className="text-op-parchment hover:text-op-cream font-mono text-sm">← Volver</button>
+          <div className="font-pirata text-op-gold text-3xl">🍎 Devil Fruits</div>
+          <button onClick={() => setPhase('hub')} className="text-op-parchment hover:text-op-cream font-mono text-sm">← Back</button>
         </div>
 
         {/* Search */}
@@ -212,7 +212,7 @@ export function DevilFruitScreen() {
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder="Buscar fruta o usuario..."
+          placeholder="Search fruit or user..."
           className="w-full bg-op-ocean border border-white/10 rounded-xl px-4 py-2.5 text-op-cream font-body text-sm placeholder-op-parchment/40 focus:outline-none focus:border-op-gold/40 mb-3"
         />
 
@@ -228,7 +228,7 @@ export function DevilFruitScreen() {
                   : 'border-white/5 text-op-parchment/50 hover:border-white/10'
               }`}
             >
-              {t === 'all' ? 'Todas' : t}
+              {t === 'all' ? 'All' : t}
             </button>
           ))}
         </div>
@@ -242,20 +242,20 @@ export function DevilFruitScreen() {
                 <div className="font-pirata text-op-cream text-lg leading-tight">
                   {fruit.emoji} {fruit.name}
                 </div>
-                <div className="text-op-parchment text-xs font-mono">Usuario: {fruit.user}</div>
+                <div className="text-op-parchment text-xs font-mono">User: {fruit.user}</div>
               </div>
               <span className={`text-xs font-mono px-2 py-0.5 rounded border flex-shrink-0 ${TYPE_COLORS[fruit.type]}`}>
                 {fruit.type}
               </span>
             </div>
             <div className="text-op-parchment/80 text-sm">{fruit.power}</div>
-            <div className="text-op-parchment/40 text-xs font-mono">Arco: {fruit.arc}</div>
+            <div className="text-op-parchment/40 text-xs font-mono">Arc: {fruit.arc}</div>
           </div>
         ))}
 
         {filtered.length === 0 && (
           <div className="text-center text-op-parchment/40 font-mono pt-20">
-            No se encontraron frutas
+            No fruits found
           </div>
         )}
       </div>

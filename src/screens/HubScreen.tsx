@@ -78,7 +78,7 @@ export function HubScreen() {
                   : 'text-op-parchment hover:text-op-cream'
               }`}
             >
-              {mode === 'normal' ? '🌊 Normal' : '☠️ Supervivencia'}
+              {mode === 'normal' ? '🌊 Normal' : '☠️ Survival'}
             </button>
           ))}
         </div>
@@ -87,7 +87,7 @@ export function HubScreen() {
       {/* Categories */}
       <div className="flex-1 overflow-y-auto px-4 space-y-3 pb-4">
         <div className="text-op-parchment text-xs font-mono uppercase tracking-widest mb-2">
-          — Elige tu ruta —
+          — Choose your route —
         </div>
 
         {CATEGORIES.map((cat, i) => {
@@ -122,7 +122,7 @@ export function HubScreen() {
                   accuracy !== null ? (
                     <div className="text-right">
                       <div className="font-mono text-op-gold text-lg font-bold">{accuracy}%</div>
-                      <div className="text-op-parchment text-xs">{stats!.correct + stats!.wrong} partidas</div>
+                      <div className="text-op-parchment text-xs">{stats!.correct + stats!.wrong} rounds</div>
                     </div>
                   ) : (
                     <div className="text-op-parchment/40 text-2xl">›</div>
@@ -147,8 +147,8 @@ export function HubScreen() {
           <div className="flex items-center gap-3">
             <span className="text-3xl">📖</span>
             <div>
-              <div className="font-pirata text-op-cream text-xl">Enciclopedia de Frutas</div>
-              <div className="text-op-parchment text-xs">Todas las Frutas del Diablo</div>
+              <div className="font-pirata text-op-cream text-xl">Devil Fruit Encyclopedia</div>
+              <div className="text-op-parchment text-xs">All Devil Fruits</div>
             </div>
           </div>
         </motion.button>

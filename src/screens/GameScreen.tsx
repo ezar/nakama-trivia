@@ -242,7 +242,7 @@ export function GameScreen() {
                   className="p-3 rounded-xl bg-op-ocean border border-op-cyan/20 text-op-parchment text-sm leading-relaxed"
                 >
                   {isLoadingExplanation ? (
-                    <span className="text-op-parchment/40 animate-pulse">Cargando explicación...</span>
+                    <span className="text-op-parchment/40 animate-pulse">Loading explanation...</span>
                   ) : pendingExplanation}
                 </motion.div>
               )}

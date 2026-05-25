@@ -4,9 +4,9 @@ const API_KEY = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined
 const MODEL = 'claude-sonnet-4-20250514'
 const BASE_URL = 'https://api.anthropic.com/v1/messages'
 
-const SYSTEM = `Eres el generador de preguntas del juego One Piece Trivia.
-Genera preguntas de trivia sobre One Piece en español.
-Responde SIEMPRE en JSON válido sin texto adicional ni backticks.`
+const SYSTEM = `You are the question generator for One Piece Trivia.
+Generate trivia questions about One Piece in English.
+ALWAYS respond in valid JSON with no extra text or backticks.`
 
 export function hasApiKey(): boolean {
   return !!API_KEY && API_KEY.startsWith('sk-ant')
@@ -37,11 +37,11 @@ async function callClaude(prompt: string): Promise<string> {
 }
 
 const CATEGORY_NAMES: Record<CategoryId, string> = {
-  characters: 'personajes (Mugiwara, marines, villanos, emperadores)',
-  arcs: 'arcos de la historia (Alabasta, Marineford, Dressrosa, Wano, etc.)',
-  devilfruits: 'Frutas del Diablo (tipos, poderes, usuarios)',
-  bounties: 'recompensas (bounties) de piratas y marines',
-  grandline: 'geografía del Grand Line (islas, rutas, mares)',
+  characters: 'characters (Straw Hats, marines, villains, emperors)',
+  arcs: 'story arcs (Alabasta, Marineford, Dressrosa, Wano, etc.)',
+  devilfruits: 'Devil Fruits (types, powers, users)',
+  bounties: 'bounties of pirates and marines',
+  grandline: 'Grand Line geography (islands, routes, seas)',
 }
 
 export async function generateQuestions(
@@ -52,23 +52,23 @@ export async function generateQuestions(
 ): Promise<Question[]> {
   const stats = profile.categoryStats[categoryId]
   const statsStr = stats
-    ? `El jugador tiene ${stats.correct} correctas y ${stats.wrong} incorrectas en esta categoría.`
-    : 'El jugador es nuevo en esta categoría.'
+    ? `The player has ${stats.correct} correct and ${stats.wrong} incorrect in this category.`
+    : 'The player is new to this category.'
 
-  const prompt = `Genera exactamente ${count} preguntas de trivia sobre One Piece de la categoría "${CATEGORY_NAMES[categoryId]}" y dificultad ${difficulty}/3 (${difficulty === 1 ? 'fácil' : difficulty === 2 ? 'medio' : 'difícil'}).
+  const prompt = `Generate exactly ${count} One Piece trivia questions for the category "${CATEGORY_NAMES[categoryId]}" at difficulty ${difficulty}/3 (${difficulty === 1 ? 'easy' : difficulty === 2 ? 'medium' : 'hard'}).
 
 ${statsStr}
 
-Cada pregunta debe tener 4 opciones y una sola respuesta correcta.
-Incluye un dato curioso o explicación breve en el campo "explanation".
+Each question must have 4 options and exactly one correct answer.
+Include a fun fact or brief explanation in the "explanation" field.
 
-Devuelve SOLO este JSON (sin texto adicional):
+Return ONLY this JSON (no extra text):
 [
   {
-    "prompt": "¿...?",
-    "options": ["opción A", "opción B", "opción C", "opción D"],
-    "correctAnswer": "opción A",
-    "explanation": "Explicación breve en 1-2 frases con entusiasmo de fan."
+    "prompt": "...?",
+    "options": ["option A", "option B", "option C", "option D"],
+    "correctAnswer": "option A",
+    "explanation": "Brief 1-2 sentence explanation with fan enthusiasm."
   }
 ]`
 
@@ -97,11 +97,11 @@ export async function getExplanation(
   question: Question,
   userAnswer: string,
 ): Promise<string> {
-  const prompt = `El jugador de One Piece Trivia respondió "${userAnswer}" a la pregunta: "${question.prompt}"
-La respuesta correcta es: "${question.correctAnswer}"
+  const prompt = `A One Piece Trivia player answered "${userAnswer}" to the question: "${question.prompt}"
+The correct answer is: "${question.correctAnswer}"
 
-Explica en máximo 60 palabras por qué la respuesta correcta es esa. 
-Usa entusiasmo de fan de One Piece. Solo el texto, sin formato ni intro.`
+Explain in at most 60 words why that is the correct answer.
+Use One Piece fan enthusiasm. Plain text only, no formatting or intro.`
 
   return callClaude(prompt)
 }

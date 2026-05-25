@@ -89,16 +89,16 @@ export function StartScreen() {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleCreate()}
-                placeholder="Nombre del pirata..."
+                placeholder="Pirate name..."
                 maxLength={16}
                 className="w-full bg-op-deep border border-white/10 rounded-lg px-4 py-3 text-op-cream font-pirata text-lg placeholder-op-parchment/40 focus:outline-none focus:border-op-gold/50"
               />
               <div className="flex gap-2">
                 <button onClick={() => setShowCreate(false)} className="flex-1 py-2.5 border border-white/10 rounded-lg text-op-parchment text-sm font-mono hover:bg-white/5 transition-colors">
-                  Cancelar
+                  Cancel
                 </button>
                 <button onClick={handleCreate} disabled={!name.trim()} className="flex-1 py-2.5 bg-op-gold text-op-deep font-pirata text-lg rounded-lg hover:bg-op-gold-dim transition-colors disabled:opacity-30">
-                  ¡Zarpar!
+                  Set Sail!
                 </button>
               </div>
             </motion.div>
@@ -107,7 +107,7 @@ export function StartScreen() {
               onClick={() => setShowCreate(true)}
               className="w-full p-4 rounded-xl border border-dashed border-white/20 text-op-parchment hover:border-op-gold/40 hover:text-op-gold transition-colors text-sm font-mono"
             >
-              + Nuevo pirata
+              + New pirate
             </button>
           )}
         </AnimatePresence>
@@ -121,7 +121,7 @@ export function StartScreen() {
           disabled={!selectedId}
           className="w-full py-4 bg-op-gold text-op-deep font-pirata text-2xl rounded-xl shadow-lg hover:bg-op-gold-dim transition-all disabled:opacity-30 disabled:cursor-not-allowed"
         >
-          ⚓ ¡Al Grand Line!
+          ⚓ To the Grand Line!
         </motion.button>
       </div>
     </div>
