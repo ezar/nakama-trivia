@@ -1,29 +1,55 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
   <rect width="512" height="512" rx="96" fill="#0A1628"/>
+
+  <!-- Gold border -->
   <rect width="512" height="512" rx="96" fill="none" stroke="#F4C542" stroke-width="14"/>
 
-  <!-- Straw Hat -->
+  <!-- ── Straw Hat ────────────────────────────────── -->
+  <!-- Crown shadow (depth) -->
   <ellipse cx="258" cy="130" rx="84" ry="57" fill="#A06A08"/>
+  <!-- Crown -->
   <ellipse cx="256" cy="126" rx="82" ry="55" fill="#D4950A"/>
+  <!-- Brim shadow -->
   <ellipse cx="258" cy="163" rx="142" ry="23" fill="#A06A08"/>
+  <!-- Brim -->
   <ellipse cx="256" cy="160" rx="140" ry="21" fill="#C8890A"/>
+  <!-- Red band -->
   <path d="M175 156 Q256 170 337 156 Q320 172 256 174 Q192 172 175 156Z" fill="#D63031"/>
 
-  <!-- Skull -->
+  <!-- ── Skull ────────────────────────────────────── -->
+  <!-- Skull head -->
   <ellipse cx="256" cy="248" rx="100" ry="94" fill="#F4C542"/>
+  <!-- Cheek shading -->
+  <ellipse cx="256" cy="260" rx="96" ry="72" fill="#EDB92A" opacity="0.4"/>
+
+  <!-- Left eye socket -->
   <ellipse cx="216" cy="232" rx="25" ry="28" fill="#0A1628"/>
+  <!-- Right eye socket -->
   <ellipse cx="296" cy="232" rx="25" ry="28" fill="#0A1628"/>
+
+  <!-- Nose -->
   <ellipse cx="256" cy="264" rx="11" ry="9" fill="#0A1628"/>
+
+  <!-- Jaw / teeth row -->
   <rect x="210" y="298" width="92" height="28" rx="7" fill="#F4C542"/>
+  <!-- Tooth dividers -->
   <line x1="233" y1="298" x2="233" y2="326" stroke="#0A1628" stroke-width="4"/>
   <line x1="256" y1="298" x2="256" y2="326" stroke="#0A1628" stroke-width="4"/>
   <line x1="279" y1="298" x2="279" y2="326" stroke="#0A1628" stroke-width="4"/>
 
-  <!-- Crossed Bones -->
+  <!-- ── Crossed Bones ───────────────────────────── -->
+  <!-- Shafts -->
   <line x1="118" y1="372" x2="394" y2="448" stroke="#F4C542" stroke-width="24" stroke-linecap="round"/>
   <line x1="394" y1="372" x2="118" y2="448" stroke="#F4C542" stroke-width="24" stroke-linecap="round"/>
+  <!-- Knobby ends — four corners -->
   <circle cx="118" cy="372" r="22" fill="#F4C542"/>
   <circle cx="394" cy="372" r="22" fill="#F4C542"/>
   <circle cx="118" cy="448" r="22" fill="#F4C542"/>
   <circle cx="394" cy="448" r="22" fill="#F4C542"/>
+  <!-- Inner knob highlights -->
+  <circle cx="118" cy="372" r="10" fill="#EDB92A"/>
+  <circle cx="394" cy="372" r="10" fill="#EDB92A"/>
+  <circle cx="118" cy="448" r="10" fill="#EDB92A"/>
+  <circle cx="394" cy="448" r="10" fill="#EDB92A"/>
 </svg>
