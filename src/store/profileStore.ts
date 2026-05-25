@@ -1,12 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { CategoryId, Profile } from '../types'
-import { RANKS } from '../config/ranks'
 import { ACHIEVEMENTS, AchievementStats } from '../config/achievements'
-
-function getRankForBerries(berries: number) {
-  return [...RANKS].reverse().find(r => berries >= r.berries) ?? RANKS[0]!
-}
 
 function createEmptyProfile(name: string, avatar: string): Profile {
   return {
