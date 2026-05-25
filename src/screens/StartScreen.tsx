@@ -7,7 +7,7 @@ import { getRankForBerries } from '../utils/rankHelpers'
 const AVATARS = ['🏴‍☠️', '☠️', '🦜', '⚓', '🌊', '🗡️', '🔥', '⚡', '🐉', '💀']
 
 export function StartScreen() {
-  const { profiles, createProfile, setActiveProfile, deleteProfile, activeProfileId } = useProfileStore()
+  const { profiles, createProfile, setActiveProfile, activeProfileId } = useProfileStore()
   const { setPhase } = useGameStore()
   const [selectedId, setSelectedId] = useState(activeProfileId ?? profiles[0]?.id ?? null)
   const [showCreate, setShowCreate] = useState(false)

@@ -5,14 +5,14 @@ import { ACHIEVEMENTS } from '../config/achievements'
 import { DEVIL_FRUITS } from '../data/devilfruits'
 import { getRankForBerries } from '../utils/rankHelpers'
 import { CATEGORIES } from '../config/categories'
-import { CategoryId, DevilFruitType } from '../types'
+import { DevilFruitType } from '../types'
+import { buildRound } from '../engine/QuestionEngine'
 import { useState } from 'react'
 
 // ─── ResultScreen ──────────────────────────────────────────────────────────────
 export function ResultScreen() {
   const { lastResult, newAchievements, currentCategoryId, setPhase, startRound } = useGameStore()
   const profile = useProfileStore(s => s.getActiveProfile())
-  const { buildRound: _ } = { buildRound: null }
 
   if (!lastResult || !profile) return null
 
@@ -115,7 +115,6 @@ export function ResultScreen() {
         {currentCategoryId && (
           <button
             onClick={() => {
-              const { buildRound } = require('../engine/QuestionEngine')
               startRound(currentCategoryId, buildRound(currentCategoryId, profile))
             }}
             className="w-full py-4 bg-op-gold text-op-deep font-pirata text-2xl rounded-xl hover:bg-op-gold-dim transition-colors"
