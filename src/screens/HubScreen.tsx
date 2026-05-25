@@ -2,15 +2,19 @@ import { motion } from 'framer-motion'
 import { useProfileStore } from '../store/profileStore'
 import { useGameStore } from '../store/gameStore'
 import { useClaudeStore } from '../store/claudeStore'
+import { useSettingsStore } from '../store/settingsStore'
 import { CATEGORIES } from '../config/categories'
 import { getRankForBerries, getNextRank, getRankProgress } from '../utils/rankHelpers'
 import { buildRound } from '../engine/QuestionEngine'
 import { CategoryId } from '../types'
+import { useT } from '../i18n/useT'
 
 export function HubScreen() {
   const profile = useProfileStore(s => s.getActiveProfile())
   const { startRound, setPhase, setGameMode, gameMode } = useGameStore()
   const { prefetch } = useClaudeStore()
+  const { language, setLanguage } = useSettingsStore()
+  const t = useT()
 
   if (!profile) return null
 
@@ -42,7 +46,7 @@ export function HubScreen() {
           </div>
           <div className="text-right">
             <div className="font-pirata text-op-gold text-xl">{profile.berries.toLocaleString()}</div>
-            <div className="text-op-parchment text-xs font-mono">berries 🍇</div>
+            <div className="text-op-parchment text-xs font-mono">{t.hub.berries}</div>
           </div>
         </div>
 
@@ -50,8 +54,8 @@ export function HubScreen() {
         {nextRank && (
           <div className="space-y-1">
             <div className="flex justify-between text-xs font-mono text-op-parchment/60">
-              <span>{rank.label}</span>
-              <span>{nextRank.label} — {nextRank.berries.toLocaleString()} 🍇</span>
+              <span>{t.ranks[rank.label] ?? rank.label}</span>
+              <span>{t.ranks[nextRank.label] ?? nextRank.label} — {nextRank.berries.toLocaleString()} 🍇</span>
             </div>
             <div className="h-1.5 bg-op-deep rounded-full overflow-hidden">
               <motion.div
@@ -78,7 +82,7 @@ export function HubScreen() {
                   : 'text-op-parchment hover:text-op-cream'
               }`}
             >
-              {mode === 'normal' ? '🌊 Normal' : '☠️ Supervivencia'}
+              {mode === 'normal' ? t.hub.normal : t.hub.survival}
             </button>
           ))}
         </div>
@@ -87,7 +91,7 @@ export function HubScreen() {
       {/* Categories */}
       <div className="flex-1 overflow-y-auto px-4 space-y-3 pb-4">
         <div className="text-op-parchment text-xs font-mono uppercase tracking-widest mb-2">
-          — Elige tu ruta —
+          {t.hub.chooseRoute}
         </div>
 
         {CATEGORIES.map((cat, i) => {
@@ -115,14 +119,14 @@ export function HubScreen() {
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{cat.emoji}</span>
                 <div className="flex-1 min-w-0">
-                  <div className="font-pirata text-op-cream text-xl">{cat.name}</div>
-                  <div className="text-op-parchment text-xs">{cat.description}</div>
+                  <div className="font-pirata text-op-cream text-xl">{t.categories[cat.id]?.name ?? cat.name}</div>
+                  <div className="text-op-parchment text-xs">{t.categories[cat.id]?.description ?? cat.description}</div>
                 </div>
                 {unlocked ? (
                   accuracy !== null ? (
                     <div className="text-right">
                       <div className="font-mono text-op-gold text-lg font-bold">{accuracy}%</div>
-                      <div className="text-op-parchment text-xs">{stats!.correct + stats!.wrong} partidas</div>
+                      <div className="text-op-parchment text-xs">{stats!.correct + stats!.wrong} {t.hub.rounds}</div>
                     </div>
                   ) : (
                     <div className="text-op-parchment/40 text-2xl">›</div>
@@ -147,8 +151,8 @@ export function HubScreen() {
           <div className="flex items-center gap-3">
             <span className="text-3xl">📖</span>
             <div>
-              <div className="font-pirata text-op-cream text-xl">Enciclopedia de Frutas</div>
-              <div className="text-op-parchment text-xs">Todas las Frutas del Diablo</div>
+              <div className="font-pirata text-op-cream text-xl">{t.hub.encyclopediaTitle}</div>
+              <div className="text-op-parchment text-xs">{t.hub.encyclopediaSub}</div>
             </div>
           </div>
         </motion.button>
@@ -158,6 +162,12 @@ export function HubScreen() {
       <div className="flex border-t border-white/5 bg-op-ocean/80">
         <button onClick={() => setPhase('ranking')} className="flex-1 py-3 text-center text-op-parchment hover:text-op-gold transition-colors text-xl">
           🏆
+        </button>
+        <button
+          onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
+          className="flex-1 py-3 text-center font-mono text-sm font-bold text-op-parchment hover:text-op-gold transition-colors"
+        >
+          {language === 'en' ? 'ES' : 'EN'}
         </button>
         <button onClick={() => setPhase('start')} className="flex-1 py-3 text-center text-op-parchment hover:text-op-gold transition-colors text-xl">
           👤

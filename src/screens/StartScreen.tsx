@@ -3,12 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useProfileStore } from '../store/profileStore'
 import { useGameStore } from '../store/gameStore'
 import { getRankForBerries } from '../utils/rankHelpers'
+import { useT } from '../i18n/useT'
 
 const AVATARS = ['🏴‍☠️', '☠️', '🦜', '⚓', '🌊', '🗡️', '🔥', '⚡', '🐉', '💀']
 
 export function StartScreen() {
   const { profiles, createProfile, setActiveProfile, activeProfileId } = useProfileStore()
   const { setPhase } = useGameStore()
+  const t = useT()
   const [selectedId, setSelectedId] = useState(activeProfileId ?? profiles[0]?.id ?? null)
   const [showCreate, setShowCreate] = useState(false)
   const [name, setName] = useState('')
@@ -33,7 +35,7 @@ export function StartScreen() {
       <div className="text-center pt-10 pb-4 px-6">
         <div className="font-pirata text-5xl text-op-gold text-shadow-gold mb-1">☠️ One Piece</div>
         <div className="font-pirata text-3xl text-op-cream mb-1">Trivia</div>
-        <div className="text-op-parchment text-xs font-mono uppercase tracking-widest">Grand Line Edition</div>
+        <div className="text-op-parchment text-xs font-mono uppercase tracking-widest">{t.start.subtitle}</div>
       </div>
 
       {/* Profile list */}
@@ -56,7 +58,7 @@ export function StartScreen() {
               <div className="flex-1 min-w-0">
                 <div className="font-pirata text-op-cream text-lg truncate">{p.name}</div>
                 <div className="text-op-parchment text-xs font-mono">
-                  {rank.emoji} {rank.label} · {p.berries.toLocaleString()} 🍇
+                  {rank.emoji} {t.ranks[rank.label] ?? rank.label} · {p.berries.toLocaleString()} 🍇
                 </div>
               </div>
               {isSelected && <div className="text-op-gold text-xl">✓</div>}
@@ -89,16 +91,16 @@ export function StartScreen() {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleCreate()}
-                placeholder="Nombre del pirata..."
+                placeholder={t.start.pirateName}
                 maxLength={16}
                 className="w-full bg-op-deep border border-white/10 rounded-lg px-4 py-3 text-op-cream font-pirata text-lg placeholder-op-parchment/40 focus:outline-none focus:border-op-gold/50"
               />
               <div className="flex gap-2">
                 <button onClick={() => setShowCreate(false)} className="flex-1 py-2.5 border border-white/10 rounded-lg text-op-parchment text-sm font-mono hover:bg-white/5 transition-colors">
-                  Cancelar
+                  {t.start.cancel}
                 </button>
                 <button onClick={handleCreate} disabled={!name.trim()} className="flex-1 py-2.5 bg-op-gold text-op-deep font-pirata text-lg rounded-lg hover:bg-op-gold-dim transition-colors disabled:opacity-30">
-                  ¡Zarpar!
+                  {t.start.setSail}
                 </button>
               </div>
             </motion.div>
@@ -107,7 +109,7 @@ export function StartScreen() {
               onClick={() => setShowCreate(true)}
               className="w-full p-4 rounded-xl border border-dashed border-white/20 text-op-parchment hover:border-op-gold/40 hover:text-op-gold transition-colors text-sm font-mono"
             >
-              + Nuevo pirata
+              {t.start.newPirate}
             </button>
           )}
         </AnimatePresence>
@@ -121,7 +123,7 @@ export function StartScreen() {
           disabled={!selectedId}
           className="w-full py-4 bg-op-gold text-op-deep font-pirata text-2xl rounded-xl shadow-lg hover:bg-op-gold-dim transition-all disabled:opacity-30 disabled:cursor-not-allowed"
         >
-          ⚓ ¡Al Grand Line!
+          {t.start.cta}
         </motion.button>
       </div>
     </div>

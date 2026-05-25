@@ -39,18 +39,18 @@ export const useClaudeStore = create<ClaudeState>()((set, get) => ({
       }))
       return questions
     } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Error al generar preguntas'
+      const msg = e instanceof Error ? e.message : 'Error generating questions'
       set({ isGenerating: false, lastError: msg })
       return []
     }
   },
 
   explain: async (question, userAnswer) => {
-    if (!hasApiKey()) return question.explanation ?? 'La respuesta correcta es: ' + question.correctAnswer
+    if (!hasApiKey()) return question.explanation ?? 'The correct answer is: ' + question.correctAnswer
     try {
       return await getExplanation(question, userAnswer)
     } catch {
-      return question.explanation ?? 'La respuesta correcta es: ' + question.correctAnswer
+      return question.explanation ?? 'The correct answer is: ' + question.correctAnswer
     }
   },
 
