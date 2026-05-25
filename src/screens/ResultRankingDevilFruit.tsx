@@ -7,12 +7,14 @@ import { getRankForBerries } from '../utils/rankHelpers'
 import { CATEGORIES } from '../config/categories'
 import { DevilFruitType } from '../types'
 import { buildRound } from '../engine/QuestionEngine'
+import { useT } from '../i18n/useT'
 import { useState } from 'react'
 
 // ─── ResultScreen ──────────────────────────────────────────────────────────────
 export function ResultScreen() {
   const { lastResult, newAchievements, currentCategoryId, setPhase, startRound } = useGameStore()
   const profile = useProfileStore(s => s.getActiveProfile())
+  const t = useT()
 
   if (!lastResult || !profile) return null
 
@@ -25,10 +27,10 @@ export function ResultScreen() {
         {/* Header */}
         <div className="text-center">
           <div className="font-pirata text-4xl text-op-gold mb-1">
-            {perfect ? '💎 Perfect!' : correctCount > wrongCount ? '⚡ Well done!' : '☠️ Keep training'}
+            {perfect ? t.result.perfect : correctCount > wrongCount ? t.result.wellDone : t.result.keepTraining}
           </div>
           <div className="text-op-parchment font-mono text-sm">
-            {currentCategoryId ? CATEGORIES.find(c => c.id === currentCategoryId)?.name : ''}
+            {currentCategoryId ? (t.categories[currentCategoryId]?.name ?? CATEGORIES.find(c => c.id === currentCategoryId)?.name) : ''}
           </div>
         </div>
 
@@ -37,31 +39,31 @@ export function ResultScreen() {
           <div className="flex justify-between">
             <div className="text-center flex-1">
               <div className="font-pirata text-op-gold text-3xl">{score.toLocaleString()}</div>
-              <div className="text-op-parchment text-xs font-mono">points</div>
+              <div className="text-op-parchment text-xs font-mono">{t.result.points}</div>
             </div>
             <div className="text-center flex-1">
               <div className="font-pirata text-op-cream text-3xl">+{berriesEarned.toLocaleString()}</div>
-              <div className="text-op-parchment text-xs font-mono">🍇 Berries</div>
+              <div className="text-op-parchment text-xs font-mono">{t.result.berries}</div>
             </div>
             <div className="text-center flex-1">
               <div className="font-pirata text-op-cyan text-3xl">×{maxStreak}</div>
-              <div className="text-op-parchment text-xs font-mono">max streak</div>
+              <div className="text-op-parchment text-xs font-mono">{t.result.maxStreak}</div>
             </div>
           </div>
 
           <div className="flex justify-between text-center">
             <div className="flex-1">
               <div className="text-op-green font-pirata text-2xl">{correctCount}</div>
-              <div className="text-op-parchment text-xs">✓ correct</div>
+              <div className="text-op-parchment text-xs">{t.result.correct}</div>
             </div>
             <div className="flex-1">
               <div className="text-op-red font-pirata text-2xl">{wrongCount}</div>
-              <div className="text-op-parchment text-xs">✗ wrong</div>
+              <div className="text-op-parchment text-xs">{t.result.wrong}</div>
             </div>
             {perfectBonus > 0 && (
               <div className="flex-1">
                 <div className="text-op-gold font-pirata text-2xl">+{perfectBonus}</div>
-                <div className="text-op-parchment text-xs">perfect bonus</div>
+                <div className="text-op-parchment text-xs">{t.result.perfectBonus}</div>
               </div>
             )}
           </div>
@@ -70,7 +72,7 @@ export function ResultScreen() {
         {/* Newly unlocked */}
         {newlyUnlockedCategories.length > 0 && (
           <div className="bg-op-gold/10 border border-op-gold/30 rounded-xl p-4">
-            <div className="font-pirata text-op-gold text-lg mb-2">🔓 New route unlocked!</div>
+            <div className="font-pirata text-op-gold text-lg mb-2">{t.result.newRoute}</div>
             {newlyUnlockedCategories.map(catId => {
               const cat = CATEGORIES.find(c => c.id === catId)
               return cat ? (
@@ -83,9 +85,10 @@ export function ResultScreen() {
         {/* New achievements */}
         {newAchievements.length > 0 && (
           <div className="space-y-2">
-            <div className="text-op-parchment text-xs font-mono uppercase tracking-widest">Achievements unlocked</div>
+            <div className="text-op-parchment text-xs font-mono uppercase tracking-widest">{t.result.achievements}</div>
             {newAchievements.map(id => {
               const ach = ACHIEVEMENTS.find(a => a.id === id)
+              const achT = t.achievements[id as keyof typeof t.achievements]
               return ach ? (
                 <motion.div
                   key={id}
@@ -95,8 +98,8 @@ export function ResultScreen() {
                 >
                   <span className="text-2xl">{ach.emoji}</span>
                   <div>
-                    <div className="font-pirata text-op-gold text-lg">{ach.name}</div>
-                    <div className="text-op-parchment text-xs">{ach.description}</div>
+                    <div className="font-pirata text-op-gold text-lg">{achT?.name ?? ach.name}</div>
+                    <div className="text-op-parchment text-xs">{achT?.description ?? ach.description}</div>
                   </div>
                 </motion.div>
               ) : null
@@ -106,7 +109,7 @@ export function ResultScreen() {
 
         {/* Profile berries */}
         <div className="text-center text-op-parchment font-mono text-sm">
-          Total: <span className="text-op-gold font-pirata text-lg">{profile.berries.toLocaleString()}</span> 🍇 Berries
+          {t.result.total} <span className="text-op-gold font-pirata text-lg">{profile.berries.toLocaleString()}</span> 🍇
         </div>
       </div>
 
@@ -119,14 +122,14 @@ export function ResultScreen() {
             }}
             className="w-full py-4 bg-op-gold text-op-deep font-pirata text-2xl rounded-xl hover:bg-op-gold-dim transition-colors"
           >
-            ⚓ Play Again
+            {t.result.playAgain}
           </button>
         )}
         <button
           onClick={() => setPhase('hub')}
           className="w-full py-3 border border-white/10 text-op-parchment font-pirata text-xl rounded-xl hover:bg-op-ocean transition-colors"
         >
-          Choose Category
+          {t.result.chooseCategory}
         </button>
       </div>
     </div>
@@ -137,14 +140,15 @@ export function ResultScreen() {
 export function RankingScreen() {
   const { setPhase } = useGameStore()
   const { profiles } = useProfileStore()
+  const t = useT()
   const sorted = [...profiles].sort((a, b) => b.berries - a.berries)
 
   return (
     <div className="h-dvh flex flex-col bg-op-navy bg-ocean-pattern">
       <div className="px-4 pt-6 pb-2">
         <div className="flex items-center justify-between mb-4">
-          <div className="font-pirata text-op-gold text-3xl">🏆 Rankings</div>
-          <button onClick={() => setPhase('hub')} className="text-op-parchment hover:text-op-cream font-mono text-sm">← Back</button>
+          <div className="font-pirata text-op-gold text-3xl">{t.ranking.title}</div>
+          <button onClick={() => setPhase('hub')} className="text-op-parchment hover:text-op-cream font-mono text-sm">{t.ranking.back}</button>
         </div>
       </div>
 
@@ -161,7 +165,7 @@ export function RankingScreen() {
               <span className="text-2xl">{p.avatar}</span>
               <div className="flex-1">
                 <div className="font-pirata text-op-cream text-lg">{p.name}</div>
-                <div className="text-op-parchment text-xs font-mono">{rank.emoji} {rank.label}</div>
+                <div className="text-op-parchment text-xs font-mono">{rank.emoji} {t.ranks[rank.label] ?? rank.label}</div>
               </div>
               <div className="text-right">
                 <div className="font-pirata text-op-gold text-lg">{p.berries.toLocaleString()}</div>
@@ -173,7 +177,7 @@ export function RankingScreen() {
 
         {sorted.length === 0 && (
           <div className="text-center text-op-parchment/40 font-mono pt-20">
-            No pirates registered yet
+            {t.ranking.empty}
           </div>
         )}
       </div>
@@ -184,6 +188,7 @@ export function RankingScreen() {
 // ─── DevilFruitScreen ──────────────────────────────────────────────────────────
 export function DevilFruitScreen() {
   const { setPhase } = useGameStore()
+  const t = useT()
   const [filter, setFilter] = useState<DevilFruitType | 'all'>('all')
   const [search, setSearch] = useState('')
 
@@ -203,8 +208,8 @@ export function DevilFruitScreen() {
     <div className="h-dvh flex flex-col bg-op-navy bg-ocean-pattern">
       <div className="px-4 pt-6 pb-2">
         <div className="flex items-center justify-between mb-4">
-          <div className="font-pirata text-op-gold text-3xl">🍎 Devil Fruits</div>
-          <button onClick={() => setPhase('hub')} className="text-op-parchment hover:text-op-cream font-mono text-sm">← Back</button>
+          <div className="font-pirata text-op-gold text-3xl">{t.devilFruits.title}</div>
+          <button onClick={() => setPhase('hub')} className="text-op-parchment hover:text-op-cream font-mono text-sm">{t.devilFruits.back}</button>
         </div>
 
         {/* Search */}
@@ -212,23 +217,23 @@ export function DevilFruitScreen() {
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder="Search fruit or user..."
+          placeholder={t.devilFruits.searchPlaceholder}
           className="w-full bg-op-ocean border border-white/10 rounded-xl px-4 py-2.5 text-op-cream font-body text-sm placeholder-op-parchment/40 focus:outline-none focus:border-op-gold/40 mb-3"
         />
 
         {/* Type filter */}
         <div className="flex gap-2">
-          {(['all', 'Paramecia', 'Zoan', 'Logia'] as const).map(t => (
+          {(['all', 'Paramecia', 'Zoan', 'Logia'] as const).map(type => (
             <button
-              key={t}
-              onClick={() => setFilter(t)}
+              key={type}
+              onClick={() => setFilter(type)}
               className={`px-3 py-1 rounded-lg text-xs font-mono border transition-all ${
-                filter === t
-                  ? t === 'all' ? 'bg-white/10 border-white/20 text-op-cream' : TYPE_COLORS[t as DevilFruitType]
+                filter === type
+                  ? type === 'all' ? 'bg-white/10 border-white/20 text-op-cream' : TYPE_COLORS[type as DevilFruitType]
                   : 'border-white/5 text-op-parchment/50 hover:border-white/10'
               }`}
             >
-              {t === 'all' ? 'All' : t}
+              {type === 'all' ? t.devilFruits.all : type}
             </button>
           ))}
         </div>
@@ -242,20 +247,20 @@ export function DevilFruitScreen() {
                 <div className="font-pirata text-op-cream text-lg leading-tight">
                   {fruit.emoji} {fruit.name}
                 </div>
-                <div className="text-op-parchment text-xs font-mono">User: {fruit.user}</div>
+                <div className="text-op-parchment text-xs font-mono">{t.devilFruits.user} {fruit.user}</div>
               </div>
               <span className={`text-xs font-mono px-2 py-0.5 rounded border flex-shrink-0 ${TYPE_COLORS[fruit.type]}`}>
                 {fruit.type}
               </span>
             </div>
             <div className="text-op-parchment/80 text-sm">{fruit.power}</div>
-            <div className="text-op-parchment/40 text-xs font-mono">Arc: {fruit.arc}</div>
+            <div className="text-op-parchment/40 text-xs font-mono">{t.devilFruits.arc} {fruit.arc}</div>
           </div>
         ))}
 
         {filtered.length === 0 && (
           <div className="text-center text-op-parchment/40 font-mono pt-20">
-            No fruits found
+            {t.devilFruits.noResults}
           </div>
         )}
       </div>

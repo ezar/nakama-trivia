@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { useProfileStore } from '../store/profileStore'
 import { useClaudeStore } from '../store/claudeStore'
+import { useT } from '../i18n/useT'
 
 const QUESTION_DURATION = 12
 const ADVANCE_DELAY = 1600
@@ -23,6 +24,7 @@ export function GameScreen() {
   const { addBerries, addCorrect, updateMaxStreak, recordCategoryStats, updateBestRoundScore } = useProfileStore()
   const profile = useProfileStore(s => s.getActiveProfile())
   const { explain } = useClaudeStore()
+  const t = useT()
 
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
@@ -127,7 +129,7 @@ export function GameScreen() {
       {/* Top bar */}
       <div className="px-4 pt-4 pb-2 space-y-2">
         <div className="flex items-center justify-between">
-          <div className="font-pirata text-op-gold text-xl">{score.toLocaleString()} pts</div>
+          <div className="font-pirata text-op-gold text-xl">{score.toLocaleString()} {t.game.pts}</div>
           <div className="font-mono text-op-parchment text-sm">
             {currentQuestionIndex + 1} / {questionQueue.length}
           </div>
@@ -242,7 +244,7 @@ export function GameScreen() {
                   className="p-3 rounded-xl bg-op-ocean border border-op-cyan/20 text-op-parchment text-sm leading-relaxed"
                 >
                   {isLoadingExplanation ? (
-                    <span className="text-op-parchment/40 animate-pulse">Loading explanation...</span>
+                    <span className="text-op-parchment/40 animate-pulse">{t.game.loadingExplanation}</span>
                   ) : pendingExplanation}
                 </motion.div>
               )}
